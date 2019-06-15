@@ -20,23 +20,14 @@ const rootEl = document.getElementById('root');
             }else{
             	
                 console.log('populating list names');
-                var keyList = [];
-                
-                for(var i=0;i<window.localStorage.items.length; i++){
-                    keyList[i] = window.localStorage.items.key(i);       
-                }
-                console.log('populating pendientes');
-                var pendientes = [];
-                for(var i=0;i<keyList.length; i++){
-                    pendientes[i] = window.localStorage.getItem(keyList[i]);       
-                }
-                console.log('finished populating', keyList, pendientes);
+                items = JSON.parse(window.localStorage.getItem('items'));
+                console.log('finished populating');
                 this.state={
                     Titulo: undefined,
                     titulotxt: undefined,
-                    Lista: keyList,
+                    Lista: Object.keys(items)
                 }
-            }
+              }
               this.onChange = this.onChange.bind(this);
               this.onSubmit = this.onSubmit.bind(this);
               this.removeItem = this.removeItem.bind(this);
@@ -82,11 +73,13 @@ const rootEl = document.getElementById('root');
                     //create a new list with initial values
                     var addition = copy[(copy.length -1)];
                     console.log(addition);
-                    var pendiente = prompt('EL PINCHE PENDIENTE');
+                    var pendiente = prompt('EL PINCHE PENDIENTE?');
                     while(pendiente == undefined || pendiente == ''){
                       var pendiente = prompt('Apurate guey');
                     }
-                    window.localStorage.setItem(`${addition}`, pendiente);  //it looks like saving a list name is working, need to be able to save the list
+                    items = JSON.parse(window.localStorage.getItem('items'));
+                    console.log('items',items)
+                    window.localStorage.setItem(`${items}`, updated);  //it looks like saving a list name is working, need to be able to save the list
               }
               console.log('handleStateEdit() end');
             } 
@@ -103,7 +96,8 @@ const rootEl = document.getElementById('root');
                                 <h1>Pendientes para aprender</h1>
                                
                                 <form onSubmit={this.onSubmit}>
-                                    <input                                    
+                                    <input  
+                                        type = 'text'                                  
                                         value={this.state.titulotxt} 
                                         placeholder="Listas"
                                         onChange={this.onChange} 
