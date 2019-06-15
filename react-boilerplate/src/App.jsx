@@ -8,7 +8,7 @@ const rootEl = document.getElementById('root');
     class App extends React.Component{
         constructor(){
              super();
-             if(window.localStorage.length === 0){
+             if(window.localStorage.items === undefined){
              
                 console.log('initializing');
                 this.state={
@@ -21,8 +21,9 @@ const rootEl = document.getElementById('root');
             	
                 console.log('populating list names');
                 var keyList = [];
-                for(var i=0;i<window.localStorage.length; i++){
-                    keyList[i] = window.localStorage.key(i);       
+                
+                for(var i=0;i<window.localStorage.items.length; i++){
+                    keyList[i] = window.localStorage.items.key(i);       
                 }
                 console.log('populating pendientes');
                 var pendientes = [];
