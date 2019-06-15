@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+<html>
+<head>
+<title>Tus Pendientes</title>
+<script src="https://unpkg.com/react@15/dist/react.min.js"> </script><script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js">
+</script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js">
+
+</script>
+<style>
+   { margin: 0; padding: 0; }
+
+    html { 
+        background: #521189;//url("https://stacysgotgreek.com/wordpress/wp-content/uploads/Pi-Lambda-Phi-Coat-of-Arms.jpg") no-repeat center center fixed; 
+      
+    }
+    h1{
+      color: #CEBB12;
+    }
+    h4{
+      color: #CEBB12;
+    }
+    p{
+      color: #CEBB12;
+    }
+    .App{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .LosPendientesContainer{
+         display: flex;
+        flex-direction: row;
+        flex-wrap: none;
+        align-items: center;
+    }
+    .ListName{
+        color: #B1902B;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .List {
+            color: #0074AA;
+            display: flex;
+            align-items: center;
+    }
+    {/*button styles */}
+    .button:hover {
+         background-color: red;
+         width: 20px;
+         height: 20px;
+    }   
+    .button{
+            width: 20px;
+            height: 20px;
+    }
+    .buttonListName:hover {
+         background-color: black;
+         width: 20px;
+         height: 20px;
+     }
+    .buttonListName {
+         width: 20px;
+         height: 20px;
+         background-color: white;
+         color: #B1902B;
+    }
+
+</style>
+</head>
+<body>
+    <div id="root">
+
+           <App/>
+    </div>
+
+    <script type="text/babel">
+
+    const LosPendientes = (props) => {
+            return(
+                    <div >
+                        <div className="ListName">
+                      
+                             <ul  > 
+                                  {
+                                      props.name
+                                  }
+                             </ul>
+                             <button className="buttonListName" onClick={() => {props.removeItem(props.index); console.log('props when onclick is called',props)}}>x</button>
+                        </div>
+                        <PendienteInput name= {props.name} />
+                    </div>
+                )
+        }
+
+    const List = (props) => {
+            return (
+                    <div className="List">
+                         <ul  > 
+                                <a href={props.url}>{
+                                    props.name
+                                }</a>
+                        </ul>
+                    <button className="button" onClick={() => props.removeItemPen(props.index)}>x</button>
+
+                </div>
+            )
+    }   
+         
+    class PendienteInput extends React.Component{
+
+             constructor(){
+                    super();
+                      console.log('initializing pendiente list');
+                      this.state={
+                        Pendiente: '',
+                        pendientetxt: undefined,
+                     } 
+                     
+                    
+                    this.onChangePen = this.onChangePen.bind(this);
+                    this.removeItemPen = this.removeItemPen.bind(this);
+                    this.onSubmitPen = this.onSubmitPen.bind(this);
+                    this.handleOnSubmitPen = this.handleOnSubmitPen.bind(this);
+                  
+                  }             
+                onChangePen = (event) =>{
+                    this.setState({pendientetxt: event.target.value});
+                }
+                removeItemPen = (index)=> { 
+                    var list = window.localStorage.getItem(`${this.props.name}`).split(',');
+                      if(list===null || list.length===1){ 
+                        window.localStorage.removeItem(`${this.props.name}`);    
+                        }
+                     else{
+                        console.log('List before removal', list);
+                        var peace = list.splice(index, 1); 
+                        window.localStorage.setItem(`${this.props.name}`, `${list}`);
+                        console.log('removeItemPen ending local storage', window.localStorage);
+                    }
+                  location.reload(false);
+                }
+
+               onSubmitPen = (event)=>{
+                event.preventDefault();
+                console.log(this, 'this    at the begining of onSubmitPen')
+                if(this.state.pendientetxt == undefined || this.state.pendientetxt === ' ' || this.state.pendientetxt === '' ){
+                    alert("Please enter a value");
+                }
+                else{
+                    var copy = window.localStorage.getItem(`${this.props.name}`);
+                    var addition = copy+','+this.state.pendientetxt;
+                    window.localStorage.setItem(`${this.props.name}`, addition);
+                         this.setState({
+                        pendientetxt: '',
+                    });
+                }
+                console.log(this, 'this at the end of onSubmitPen');
+
+                }
+              handleOnSubmitPen(list, copy){
+              console.log('handleNewPendiente() start');
+              if(copy.length > list.length) {
+                    console.log('A pendiente was added named:');
+                    //create a new list with initial values
+                    var addition = copy[(copy.length -1)];
+                    console.log(addition);
+                    console.log('copy', copy)
+                    window.localStorage.setItem(`${this.props.name}`, copy);  //it looks like saving a list name is working, need to be able to save the list
+              }
+              console.log('handleNewPende() end');
+                 }   
+                render(){
+                        //log the props of Pendiente
+                        console.log('Pendiente props render()', this.props);
+                      if(window.localStorage.getItem(`${this.props.name}`) === null){
+                          alert('wait');
+                        }
+                    else{
+                      return(
+                        <div>
+                           
+                            <form onSubmit={this.onSubmitPen}>
+                                <input                                    
+                                    value={this.state.pendientetxt} 
+                                    placeholder={`Pendiente de ${this.props.name}`}
+                                    onChange={this.onChangePen}
+                        
+                                />
+                            </form>
+                            {window.localStorage.getItem(`${this.props.name}`).split(',').map((d, i) => (<List removeItemPen={this.removeItemPen} name={d} index={i} key={'ah-'+ i} />))}
+                         </div>
+                            );
+                    }
+                }
+    }
+
+
+
+    class App extends React.Component{
+        constructor(){
+             super();
+             if(window.localStorage.length === 0){
+                console.log('initializing');
+                this.state={
+                  Titulo: undefined,
+                  titulotxt: undefined,
+                  Lista: [],
+                  Pendientes: [],
+                 };
+            }else{
+                console.log('populating list names');
+                var keyList = [];
+                for(var i=0;i<window.localStorage.length; i++){
+                    keyList[i] = window.localStorage.key(i);       
+                }
+                console.log('populating pendientes');
+                var pendientes = [];
+                for(var i=0;i<keyList.length; i++){
+                    pendientes[i] = window.localStorage.getItem(keyList[i]);       
+                }
+                console.log('finished populating', keyList, pendientes);
+                this.state={
+                    Titulo: undefined,
+                    titulotxt: undefined,
+                    Lista: keyList,
+                }
+            }
+              this.onChange = this.onChange.bind(this);
+              this.onSubmit = this.onSubmit.bind(this);
+              this.removeItem = this.removeItem.bind(this);
+              this.handleOnSubmit = this.handleOnSubmit.bind(this);
+              
+          }
+         onChange = (event) =>{
+                this.setState({titulotxt: event.target.value});
+            }
+          onSubmit = (event)=>{
+                event.preventDefault();
+                var ListCopy = this.state.Lista;
+                if(this.state.Titulo == undefined && (this.state.titulotxt == undefined || this.state.titulotxt == '')){
+                    alert("Please enter a value");
+                }  
+                else {
+                    this.setState({
+                        titulotxt: '',
+                        Lista: [...this.state.Lista, this.state.titulotxt]
+                    });  
+                     const ListCopy = [...this.state.Lista, this.state.titulotxt];
+                    console.log('copy of lists after enter', ListCopy);   
+                    this.handleOnSubmit(this.state.Lista, ListCopy); 
+                    }
+             }
+            removeItem = (index)=> {
+                    console.log('removeItem start app()', this.state)
+                    var lista = this.state.Lista;
+                    var index = index;
+                    var peace = lista.splice(index, 1);
+                    
+                    //console.log peace, lista and index
+                    console.log('peace', peace, 'lista', lista, 'index', index )
+                    this.setState({Lista: lista})
+                    window.localStorage.removeItem(`${peace}`);
+                    console.log('removeItem end', this.state)
+                  }
+
+            handleOnSubmit(list, copy){
+              console.log('handleStateEdit() start');
+              if(copy.length > list.length) {
+                    console.log('A list was added named:');
+                    //create a new list with initial values
+                    var addition = copy[(copy.length -1)];
+                    console.log(addition);
+                    var pendiente = prompt('EL PINCHE PENDIENTE');
+                    while(pendiente == undefined || pendiente == ''){
+                      var pendiente = prompt('Apurate guey');
+                    }
+                    window.localStorage.setItem(`${addition}`, pendiente);  //it looks like saving a list name is working, need to be able to save the list
+              }
+              console.log('handleStateEdit() end');
+            } 
+            render(){
+             //window.localStorage.clear();
+               console.log("localStorage", "App render()", window.localStorage);
+                //display state of the app
+                console.log('App state', 'render()',this.state);
+
+
+                    return(
+                   
+                             <div className="App">
+                                <h1>Pendientes en orden de fecha de entrega</h1>
+                                <h4>Por favor no dejes niguna caja de texto vacio.</h4>
+                                <p> CrÃ¨eme... jode todo</p>
+                                <form onSubmit={this.onSubmit}>
+                                    <input                                    
+                                        value={this.state.titulotxt} 
+                                        placeholder="Listas"
+                                        onChange={this.onChange} 
+                                       onSubmit={this.onSubmit} 
+                                    />
+                                </form>
+                                <div className="LosPendientesContainer" >
+
+                                        {this.state.Lista.map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) }
+                                </div>
+                               </div>
+                    );
+
+            }
+  }
+    ReactDOM.render(<App/>, document.getElementById('root'));
+        
+       
+    </script>
+</body>
+</html>
