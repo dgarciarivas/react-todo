@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import LosPendientes from './components/LosPendientes';
 
 const rootEl = document.getElementById('root');
 
@@ -110,7 +110,7 @@ const rootEl = document.getElementById('root');
                                 </form>
                                 <div className="LosPendientesContainer" >
 
-                                        
+                                         {this.state.Lista.map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) }
                                 </div>
                                </div>
                     );
