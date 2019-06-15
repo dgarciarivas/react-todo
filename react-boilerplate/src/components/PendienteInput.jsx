@@ -1,38 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import List from './List';
 
-    const LosPendientes = (props) => {
-            return(
-                    <div >
-                        <div className="ListName">
-                      
-                             <ul  > 
-                                  {
-                                      props.name
-                                  }
-                             </ul>
-                             <button className="buttonListName" onClick={() => {props.removeItem(props.index); console.log('props when onclick is called',props)}}>x</button>
-                        </div>
-                        <PendienteInput name= {props.name} />
-                    </div>
-                )
-        }
 
-    const List = (props) => {
-            return (
-                    <div className="List">
-                         <ul  > 
-                                <a href={props.url}>{
-                                    props.name
-                                }</a>
-                        </ul>
-                    <button className="button" onClick={() => props.removeItemPen(props.index)}>x</button>
-
-                </div>
-            )
-    }   
-         
-    class PendienteInput extends React.Component{
+class PendienteInput extends React.Component{
 
              constructor(){
                     super();
@@ -116,6 +87,7 @@ import ReactDOM from 'react-dom';
                     }
   
     }
+    export default PendienteInput;
 
 
-    export default LosPendientes;
+
