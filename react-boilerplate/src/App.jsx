@@ -9,6 +9,7 @@ const rootEl = document.getElementById('root');
         constructor(){
              super();
              if(window.localStorage.length === 0){
+             
                 console.log('initializing');
                 this.state={
                   Titulo: undefined,
@@ -17,6 +18,7 @@ const rootEl = document.getElementById('root');
                   Pendientes: [],
                  };
             }else{
+            	
                 console.log('populating list names');
                 var keyList = [];
                 for(var i=0;i<window.localStorage.length; i++){
@@ -92,14 +94,13 @@ const rootEl = document.getElementById('root');
                console.log("localStorage", "App render()", window.localStorage);
                 //display state of the app
                 console.log('App state', 'render()',this.state);
-
+            
 
                     return(
                    
                              <div className="App">
-                                <h1>Pendientes en orden de fecha de entrega</h1>
-                                <h4>Por favor no dejes niguna caja de texto vacio.</h4>
-                                <p> CrÃ¨eme... jode todo</p>
+                                <h1>Pendientes para aprender</h1>
+                               
                                 <form onSubmit={this.onSubmit}>
                                     <input                                    
                                         value={this.state.titulotxt} 

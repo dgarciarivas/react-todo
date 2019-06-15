@@ -16,3 +16,6 @@ https://stackoverflow.com/questions/24290358/remove-a-folder-from-git-tracking
 
 This link helped me learn export and import with react
 https://www.geeksforgeeks.org/reactjs-importing-exporting/
+
+
+
