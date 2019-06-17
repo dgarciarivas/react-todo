@@ -8,24 +8,31 @@ const rootEl = document.getElementById('root');
     class App extends React.Component{
         constructor(){
              super();
-             if(window.localStorage.items === undefined){
+             if(window.localStorage.storage === undefined){
              
                 console.log('initializing');
+                window.localStorage.setItem('storage', 'start');
                 this.state={
                   Titulo: undefined,
                   titulotxt: undefined,
                   Lista: [],
                   Pendientes: [],
                  };
-            }else{
-            	
+            }else if(window.localStorage.storage === 'start'){
+                var first = prompt('Empieza la lista!');
+                let items = {'start': first}
+                window.localStorage.setItem('storage', JSON.stringify(items));
+
+
+            }else {
+            	 
                 console.log('populating list names');
-                items = JSON.parse(window.localStorage.getItem('items'));
+                var storage = JSON.parse(window.localStorage.getItem('storage'));
                 console.log('finished populating');
                 this.state={
                     Titulo: undefined,
                     titulotxt: undefined,
-                    Lista: Object.keys(items)
+                    Lista: Object.keys(storage)
                 }
               }
               this.onChange = this.onChange.bind(this);
@@ -98,8 +105,7 @@ const rootEl = document.getElementById('root');
                                 <form onSubmit={this.onSubmit}>
                                     <input  
                                         type = 'text'                                  
-                                        value={this.state.titulotxt} 
-                                        placeholder="Listas"
+                                        value={this.state.titulotxt}                                        placeholder="Listas"
                                         onChange={this.onChange} 
                                        onSubmit={this.onSubmit} 
                                     />
