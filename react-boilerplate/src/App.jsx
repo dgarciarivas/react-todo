@@ -21,7 +21,7 @@ const rootEl = document.getElementById('root');
                 console.log('Stored local the initial list:', window.localStorage.storage)
                 this.state={
                   titulotxt: undefined,
-                  Lista: [Object.keys(storage)]
+                  Lista: Object.keys(storage)
                  };
             }else{
             	 
@@ -30,7 +30,7 @@ const rootEl = document.getElementById('root');
                 console.log('finished gathering storage, list names are', Object.keys(storage));
                 this.state={
                     titulotxt: undefined,
-                    Lista: [Object.keys(storage)]
+                    Lista: Object.keys(storage)
                 }
               }
               this.onChange = this.onChange.bind(this);
@@ -75,24 +75,37 @@ const rootEl = document.getElementById('root');
               console.log('App.handleStateEdit() end');
             } 
             removeItem = (index)=> {
-                    console.log('removeItem start app()', this.state)
-                    var lista = this.state.Lista;
-                    var index = index;
-                    var peace = lista.splice(index, 1);
-                    
-                    //console.log peace, lista and index
-                    console.log('peace', peace, 'lista', lista, 'index', index )
-                    this.setState({Lista: lista})
-                    window.localStorage.removeItem(`${peace}`);
-                    console.log('removeItem end', this.state)
+                console.log('start of app.removeItem()')
+                if (index === 0){
+                    console.log(index, 'log the index passed in');
+                    var list = this.state.Lista;
+                    var gone = list.shift();
+                    console.log(list, gone)
+                    var newList = list;
                   }
-
+                 
+                else{
+                   console.log(index, 'log the index passed in');
+                    var list = this.state.Lista;
+                    var gone = list.splice(index,1);
+                    console.log(list, gone)
+                    var newList = list;
+                  }
+                console.log(gone);
+                console.log(newList);
+                let retrieve = JSON.parse(window.localStorage.storage);
+                let listNames = Object.keys(retrieve);
+                console.log(listNames);
+                console.log(retrieve);
+                delete retrieve[gone];
+                console.log('new list to be stored', retrieve);
+                window.localStorage.setItem('storage', JSON.stringify(retrieve));
+                console.log('updated storage', window.localStorage.storage);
+                console.log('updating state for render')
+                this.setState({Lista: Object.keys(JSON.parse(window.localStorage.getItem('storage')))})
+                console.log('end of app.removeItem');
+                  }
             render(){
-               console.log("localStorage", "App render()", window.localStorage.storage);
-                //display state of the app
-                console.log('App state', 'render()',this.state);
-            
-
                     return(
                    
                              <div className="App">

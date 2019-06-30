@@ -78,10 +78,7 @@ class PendienteInput extends React.Component{
                         
                                 />
                             </form>
-                            {/*Object.values(JSON.parse(window.localStorage.getItem('App')).easy).map((d, i) => (<List removeItemPen={this.removeItemPen} name={d} index={i} key={'ah-'+ i} />))}
-                            {Object.values(JSON.parse(window.localStorage.getItem('App')).medium).map((d, i) => (<List removeItemPen={this.removeItemPen} name={d} index={i} key={'ah-'+ i} />))}
-                            {Object.values(JSON.parse(window.localStorage.getItem('App')).hard).map((d, i) => (<List removeItemPen={this.removeItemPen} name={d} index={i} key={'ah-'+ i} />))}
-                            {/*window.localStorage.getItem(`${this.props.name}`).split(',').map((d, i) => (<List removeItemPen={this.removeItemPen} name={d} index={i} key={'ah-'+ i} />))*/}
+                          
                          </div>
                             );
                     }
