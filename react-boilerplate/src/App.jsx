@@ -8,31 +8,29 @@ const rootEl = document.getElementById('root');
     class App extends React.Component{
         constructor(){
              super();
+             var storage = window.localStorage.storage;
+             console.log(storage, "this is the variable storage which should be everything stored locally, the call is window.localStorage.storage")
              if(window.localStorage.storage === undefined){
-             
-                console.log('initializing');
-                window.localStorage.setItem('storage', 'start');
+              let init = prompt('Welcome to pendientes! Start your pinche Pendientes:');
+                console.log('initializing with', init);
+                var storage = {
+
+                  [init]: [] 
+                  }
+                window.localStorage.setItem('storage', JSON.stringify(storage));
+                console.log('Stored local the initial list:', window.localStorage.storage)
                 this.state={
-                  Titulo: undefined,
                   titulotxt: undefined,
-                  Lista: [],
-                  Pendientes: [],
+                  Lista: [Object.keys(storage)]
                  };
-            }else if(window.localStorage.storage === 'start'){
-                var first = prompt('Empieza la lista!');
-                let items = {'start': []}
-                window.localStorage.setItem('storage', JSON.stringify(items));
-
-
-            }else {
+            }else{
             	 
                 console.log('gathering list names');
                 let storage = JSON.parse(window.localStorage.getItem('storage'));
-                console.log('finished gathering', Object.keys(storage));
+                console.log('finished gathering storage, list names are', Object.keys(storage));
                 this.state={
-                    Titulo: undefined,
                     titulotxt: undefined,
-                    Lista: Object.keys(storage)
+                    Lista: [Object.keys(storage)]
                 }
               }
               this.onChange = this.onChange.bind(this);
@@ -46,7 +44,7 @@ const rootEl = document.getElementById('root');
             }
           onSubmit = (event)=>{
                 event.preventDefault();
-                var ListCopy = this.state.Lista;
+                var currentList = this.state.Lista;
                 if(this.state.Titulo == undefined && (this.state.titulotxt == undefined || this.state.titulotxt == '')){
                     alert("Please enter a value");
                 }  
@@ -55,11 +53,27 @@ const rootEl = document.getElementById('root');
                         titulotxt: '',
                         Lista: [...this.state.Lista, this.state.titulotxt]
                     });  
-                     const ListCopy = [...this.state.Lista, this.state.titulotxt];
-                    console.log('copy of lists after enter', ListCopy);   
-                    this.handleOnSubmit(this.state.Lista, ListCopy); 
+                     const updatedList = [...this.state.Lista, this.state.titulotxt];
+                    console.log('currentList',  currentList);
+                    console.log('updatedList', updatedList);   
+                    this.handleOnSubmit(updatedList); 
                     }
              }
+            handleOnSubmit(updatedList){
+              console.log('App.handleOnSubmit() start');
+              console.log('length of list',updatedList.length);
+              let index = updatedList.length;
+              index--;
+              var addition = updatedList[index];
+              console.log('what i want to add:', addition)
+              console.log('what is currently stored', window.localStorage.storage);
+              let storage = JSON.parse(window.localStorage.storage);
+              storage[addition] = [];
+              console.log('new list to be stored', storage);
+              window.localStorage.setItem('storage', JSON.stringify(storage));
+              console.log('updated storage', window.localStorage.storage);
+              console.log('App.handleStateEdit() end');
+            } 
             removeItem = (index)=> {
                     console.log('removeItem start app()', this.state)
                     var lista = this.state.Lista;
@@ -73,26 +87,8 @@ const rootEl = document.getElementById('root');
                     console.log('removeItem end', this.state)
                   }
 
-            handleOnSubmit(list, copy){
-              console.log('handleStateEdit() start');
-              if(copy.length > list.length) {
-                    console.log('A list was added named:');
-                    //create a new list with initial values
-                    var addition = copy[(copy.length -1)];
-                    console.log(addition);
-                    var pendiente = prompt('EL PINCHE PENDIENTE?');
-                    while(pendiente == undefined || pendiente == ''){
-                      var pendiente = prompt('Apurate guey');
-                    }
-                    items = JSON.parse(window.localStorage.getItem('items'));
-                    console.log('items',items)
-                    window.localStorage.setItem(`${items}`, updated);  //it looks like saving a list name is working, need to be able to save the list
-              }
-              console.log('handleStateEdit() end');
-            } 
             render(){
-             //window.localStorage.clear();
-               console.log("localStorage", "App render()", window.localStorage);
+               console.log("localStorage", "App render()", window.localStorage.storage);
                 //display state of the app
                 console.log('App state', 'render()',this.state);
             
@@ -105,14 +101,15 @@ const rootEl = document.getElementById('root');
                                 <form onSubmit={this.onSubmit}>
                                     <input  
                                         type = 'text'                                  
-                                        value={this.state.titulotxt}                                        placeholder="Listas"
+                                        value={this.state.titulotxt}                                       
+                                        placeholder="Listas"
                                         onChange={this.onChange} 
                                        onSubmit={this.onSubmit} 
                                     />
                                 </form>
                                 <div className="LosPendientesContainer" >
 
-                                         {this.state.Lista.map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) }
+                                         {Object.keys(JSON.parse(window.localStorage.getItem('storage'))).map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) }
                                 </div>
                                </div>
                     );
