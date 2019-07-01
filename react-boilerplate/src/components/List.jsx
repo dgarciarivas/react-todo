@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 
  const List = (props) => {
             return (
@@ -8,7 +8,7 @@ import react from 'react';
                                     props.name
                                 }</a>
                         </ul>
-                    <button className="button" onClick={() => props.removeItemPen(props.index)}>x</button>
+                    <button className="button" onClick={() => props.removeItem(props.index)}>x</button>
 
                 </div>
             )

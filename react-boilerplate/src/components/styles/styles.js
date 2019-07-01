@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<style>
-   { margin: 0; padding: 0; }
+styles: {
+    { margin: 0; padding: 0; },
 
     html { 
-        background: #521189;
+        background: #521189;//url("https://stacysgotgreek.com/wordpress/wp-content/uploads/Pi-Lambda-Phi-Coat-of-Arms.jpg") no-repeat center center fixed; 
       
     }
     h1{
@@ -20,40 +17,28 @@
     .App{
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
         align-items: center;
-    }
-    .PendienteInput{
-        display: flex;
-        flex-direction: column;
     }
     .LosPendientesContainer{
          display: flex;
-         flex-direction: row;
-         flex-wrap: nowrap;
-         justify-conent: space-around;
-    }
-    .elPendiente{
-        margin: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .ListHeader{
-        color: #B1902B;
-        margin: 5px;
-        display: flex;
         flex-direction: row;
-        flex-wrap: nowrap;
+        flex-wrap: none;
         align-items: center;
-        
+    }
+    .ListName{
+        color: #B1902B;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
     }
     .List {
             color: #0074AA;
             display: flex;
             align-items: center;
     }
+    {/*button styles */}
     .button:hover {
-
          background-color: red;
          width: 20px;
          height: 20px;
@@ -64,25 +49,13 @@
     }
     .buttonListName:hover {
          background-color: black;
-         margin: 10px;
          width: 20px;
          height: 20px;
      }
     .buttonListName {
-        margin: 10px;
          width: 20px;
          height: 20px;
          background-color: white;
          color: #B1902B;
     }
-
-</style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>React Boilerplate</title>
-</head>
-<body>
-    <div id="root"></div>
-</body>
-</html>
+    }

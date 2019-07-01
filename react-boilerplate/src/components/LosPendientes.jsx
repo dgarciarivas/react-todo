@@ -5,17 +5,18 @@ import PendienteInput from './PendienteInput.jsx'
 
     const LosPendientes = (props) => {
             return(
-                    <div >
-                        <div className="ListName">
+                    <div className = "elPendiente">
+                        <div className="ListHeader">
                       
-                             <ul  > 
+                             <ul style={props.style} > 
                                   {
                                       props.name
                                   }
                              </ul>
                              <button className="buttonListName" onClick={() => {props.removeItem(props.index); console.log('props when onclick is called',props)}}>x</button>
                         </div>
-                        <PendienteInput name= {props.name} />
+
+                        <PendienteInput className = "PendienteInput" listName= {props.name} removeItem = {props.removeItem} index = {props.index} />
                     </div>
                 )
         }

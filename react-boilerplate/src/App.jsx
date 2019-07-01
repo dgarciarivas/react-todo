@@ -10,7 +10,7 @@ const rootEl = document.getElementById('root');
              super();
              var storage = window.localStorage.storage;
              console.log(storage, "this is the variable storage which should be everything stored locally, the call is window.localStorage.storage")
-             if(window.localStorage.storage === undefined){
+             if(window.localStorage.storage === undefined || window.localStorage.storage === [] || window.localStorage.storage === ""){
               let init = prompt('Welcome to pendientes! Start your pinche Pendientes:');
                 console.log('initializing with', init);
                 var storage = {
@@ -26,7 +26,7 @@ const rootEl = document.getElementById('root');
             }else{
             	 
                 console.log('gathering list names');
-                let storage = JSON.parse(window.localStorage.getItem('storage'));
+                let storage = JSON.parse(window.localStorage.storage);
                 console.log('finished gathering storage, list names are', Object.keys(storage));
                 this.state={
                     titulotxt: undefined,
@@ -37,6 +37,7 @@ const rootEl = document.getElementById('root');
               this.onSubmit = this.onSubmit.bind(this);
               this.removeItem = this.removeItem.bind(this);
               this.handleOnSubmit = this.handleOnSubmit.bind(this);
+            
               
           }
          onChange = (event) =>{
@@ -107,11 +108,9 @@ const rootEl = document.getElementById('root');
                   }
             render(){
                     return(
-                   
-                             <div className="App">
+                             <div  className="App" >
                                 <h1>Pendientes para aprender</h1>
-                               
-                                <form onSubmit={this.onSubmit}>
+                                <form  onSubmit={this.onSubmit}>
                                     <input  
                                         type = 'text'                                  
                                         value={this.state.titulotxt}                                       
@@ -122,7 +121,9 @@ const rootEl = document.getElementById('root');
                                 </form>
                                 <div className="LosPendientesContainer" >
 
-                                         {Object.keys(JSON.parse(window.localStorage.getItem('storage'))).map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) }
+                                    {
+                                      Object.keys(JSON.parse(window.localStorage.getItem('storage'))).map((d, i) => (<LosPendientes removeItem={this.removeItem}  name={d} index={i} key={'k[-'+ i} />)) 
+                                    }
                                 </div>
                                </div>
                     );

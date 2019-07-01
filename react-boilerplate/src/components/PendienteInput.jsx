@@ -4,13 +4,15 @@ import List from './List';
 
 
 class PendienteInput extends React.Component{
-
              constructor(){
                     super();
-                      console.log('initializing pendiente list');
+                    var storage = window.localStorage.storage;
+                    console.log(storage, "this is the variable storage which should be everything stored locally, the call is window.localStorage.storage")
+                    console.log('initializing pendiente list');
+                    console.log(this);
                       this.state={
-                        Pendiente: '',
-                        pendientetxt: undefined,
+                        pendienteList: [],
+                        newpendientetxt: undefined,
                      } 
                      
                     
@@ -21,37 +23,29 @@ class PendienteInput extends React.Component{
                   
                   }             
                 onChangePen = (event) =>{
-                    this.setState({pendientetxt: event.target.value});
-                }
-                removeItemPen = (index)=> { 
-                    var list = window.localStorage.getItem(`${this.props.name}`).split(',');
-                      if(list===null || list.length===1){ 
-                        window.localStorage.removeItem(`${this.props.name}`);    
-                        }
-                     else{
-                        console.log('List before removal', list);
-                        var peace = list.splice(index, 1); 
-                        window.localStorage.setItem(`${this.props.name}`, `${list}`);
-                        console.log('removeItemPen ending local storage', window.localStorage);
-                    }
-                  location.reload(false);
+                    this.setState({newpendientetxt: event.target.value});
                 }
 
                onSubmitPen = (event)=>{
-                event.preventDefault();
-                console.log(this, 'this    at the begining of onSubmitPen')
-                if(this.state.pendientetxt == undefined || this.state.pendientetxt === ' ' || this.state.pendientetxt === '' ){
+                console.log('PendienteInput.onSubmitPen start')
+                console.log(this.props)
+                if(this.state.newpendientetxt == undefined || this.state.newpendientetxt === ' ' || this.state.newpendientetxt === '' ){
                     alert("Please enter a value");
                 }
                 else{
-                    var copy = window.localStorage.getItem(`${this.props.name}`);
-                    var addition = copy+','+this.state.pendientetxt;
-                    window.localStorage.setItem(`${this.props.name}`, addition);
-                         this.setState({
-                        pendientetxt: '',
+                    var addition = this.state.newpendientetxt;
+                    console.log('i want to add:',addition);
+                    this.setState({
+                        newpendientetxt: '',
+                        pendienteList: [...this.state.pendienteList, addition]
                     });
                 }
-                console.log(this, 'this at the end of onSubmitPen');
+                let retrieve = JSON.parse(window.localStorage.getItem('storage'));
+                console.log('I currently have:',retrieve[this.props.listName]);
+                retrieve[this.props.listName] = [...retrieve[this.props.listName], addition];
+                console.log('Need to save new list: ', retrieve);
+                window.localStorage.setItem('storage', JSON.stringify(retrieve));
+                console.log('PendienteInput.onSubmitPen end');
 
                 }
               handleOnSubmitPen(list, copy){
@@ -65,12 +59,26 @@ class PendienteInput extends React.Component{
                     window.localStorage.setItem(`${this.props.name}`, copy);  //it looks like saving a list name is working, need to be able to save the list
               }
               console.log('handleNewPende() end');
-                 }   
+                 }
+            removeItemPen = (index)=> { 
+                  console.log("PendienteInput.removeItem start")
+                  console.log('index of the item clicked on',index);
+                  console.log('grab the stored values', JSON.parse(window.localStorage.storage));
+                  let retrieve = JSON.parse(window.localStorage.storage);
+                  console.log('I currently have:',retrieve[this.props.listName]);
+                  let gone = retrieve[this.props.listName].splice(index, 1);
+                  let newList  = retrieve[this.props.listName];
+                  console.log('what was removed', gone);
+                  console.log('Need to save new list: ', retrieve);
+                  window.localStorage.setItem('storage', JSON.stringify(retrieve));
+                  console.log("PendienteInput.removeItem end")
+                  this.setState({pendienteList: []})
+                }   
                 render(){
                       return(
-                        <div>
+                        <div className = "PendienteInput">
                            
-                            <form onSubmit={this.onSubmitPen}>
+                            <form className = 'textinput' onSubmit={this.onSubmitPen}>
                                 <input                                    
                                     value={this.state.pendientetxt} 
                                     placeholder={`Pendiente de ${this.props.name}`}
@@ -78,6 +86,7 @@ class PendienteInput extends React.Component{
                         
                                 />
                             </form>
+                           {JSON.parse(window.localStorage.getItem('storage'))[[this.props.listName]].map((d, i) => (<List removeItem={this.removeItemPen}  name={d} index={i} key={'k[-'+ i} />)) }
                           
                          </div>
                             );
