@@ -20,3 +20,7 @@ https://www.geeksforgeeks.org/reactjs-importing-exporting/
 
 This link helped me undertand the diff between var and let
 https://www.geeksforgeeks.org/difference-between-var-and-let-in-javascript/
+
+This link helped me lfix a bug in react forms
+https://www.sitepoint.com/work-with-forms-in-react/
+

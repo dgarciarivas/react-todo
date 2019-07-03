@@ -27,6 +27,7 @@ class PendienteInput extends React.Component{
                 }
 
                onSubmitPen = (event)=>{
+                event.preventDefault();
                 console.log('PendienteInput.onSubmitPen start')
                 console.log(this.props)
                 if(this.state.newpendientetxt == undefined || this.state.newpendientetxt === ' ' || this.state.newpendientetxt === '' ){
@@ -58,6 +59,7 @@ class PendienteInput extends React.Component{
                     console.log('copy', copy)
                     window.localStorage.setItem(`${this.props.name}`, copy);  //it looks like saving a list name is working, need to be able to save the list
               }
+              this.onSubmitPen(event);
               console.log('handleNewPende() end');
                  }
             removeItemPen = (index)=> { 
@@ -80,7 +82,7 @@ class PendienteInput extends React.Component{
                            
                             <form className = 'textinput' onSubmit={this.onSubmitPen}>
                                 <input                                    
-                                    value={this.state.pendientetxt} 
+                                    value={this.state.newpendientetxt} 
                                     placeholder={`Pendiente de ${this.props.name}`}
                                     onChange={this.onChangePen}
                         

@@ -44,7 +44,7 @@ const rootEl = document.getElementById('root');
                 this.setState({titulotxt: event.target.value});
             }
           onSubmit = (event)=>{
-                event.preventDefault();
+                
                 var currentList = this.state.Lista;
                 if(this.state.Titulo == undefined && (this.state.titulotxt == undefined || this.state.titulotxt == '')){
                     alert("Please enter a value");
